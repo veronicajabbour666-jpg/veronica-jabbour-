@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veronica Jabbour | Filmmaker & Visual Storyteller</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #0a0a0a;
+            --accent: #c9a227;
+            --text: #f5f5f5;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+        
+        .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        /* Film grain overlay */
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+        
+        /* Text reveal animation */
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        
+        .char {
+            display: inline-block;
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        
+        /* Hover effects */
+        .work-card {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .work-card:hover {
+            transform: scale(1.02);
+        }
+        .work-card:hover .work-overlay {
+            opacity: 1;
+        }
+        .work-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Magnetic button */
+        .magnetic-btn {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Navigation blur */
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.8);
+        }
+        
+        /* Loading screen */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: #0a0a0a;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        /* Video play button pulse */
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        .play-pulse::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            animation: pulse-ring 2s infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-yellow-600 selection:text-black">
+
+    <!-- Film Grain Overlay -->
+    <div class="grain"></div>
+
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="text-center">
+            <div class="font-serif text-4xl md:text-6xl italic text-yellow-600 mb-4 tracking-wider">VJ</div>
+            <div class="w-32 h-0.5 bg-gray-800 mx-auto overflow-hidden">
+                <div class="h-full bg-yellow-600 animate-[loading_1.5s_ease-in-out_infinite]"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-40 transition-all duration-500 py-6" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="font-serif text-2xl md:text-3xl font-light tracking-widest text-white hover:text-yellow-600 transition-colors">
+                VERONICA<span class="text-yellow-600">.</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#work" class="text-sm tracking-widest uppercase hover:text-yellow-600 transition-colors relative group">
+                    Work
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-yellow-600 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#about" class="text-sm tracking-widest uppercase hover:text-yellow-600 transition-colors relative group">
+                    About
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-yellow-600 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#services" class="text-sm tracking-widest uppercase hover:text-yellow-600 transition-colors relative group">
+                    Services
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-yellow-600 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#contact" class="magnetic-btn px-6 py-3 border border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-black transition-all duration-300 text-sm tracking-widest uppercase">
+                    Contact
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white" id="mobile-menu-btn">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="fixed inset-0 bg-black z-30 transform translate-x-full transition-transform duration-500 md:hidden" id="mobile-menu">
+        <div class="flex flex-col items-center justify-center h-full gap-8">
+            <a href="#work" class="font-serif text-3xl italic hover:text-yellow-600 transition-colors mobile-link">Work</a>
+            <a href="#about" class="font-serif text-3xl italic hover:text-yellow-600 transition-colors mobile-link">About</a>
+            <a href="#services" class="font-serif text-3xl italic hover:text-yellow-600 transition-colors mobile-link">Services</a>
+            <a href="#contact" class="font-serif text-3xl italic text-yellow-600 mobile-link">Contact</a>
+        </div>
+        <button class="absolute top-6 right-6 text-white" id="close-menu">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Video/Image Placeholder -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/90 z-10"></div>
+            <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1920&q=80" 
+                 alt="Cinematic background" 
+                 class="w-full h-full object-cover opacity-60 scale-110" 
+                 id="hero-bg">
+        </div>
+
+        <div class="relative z-20 text-center px-6 max-w-5xl mx-auto">
+            <p class="text-yellow-600 text-sm md:text-base tracking-[0.3em] uppercase mb-6 opacity-0" id="hero-subtitle">
+                Filmmaker & Visual Storyteller
+            </p>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-9xl font-light leading-tight mb-8" id="hero-title">
+                <span class="block overflow-hidden">
+                    <span class="inline-block">VERONICA</span>
+                </span>
+                <span class="block overflow-hidden italic text-yellow-600">
+                    <span class="inline-block">JABBOUR</span>
+                </span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed opacity-0" id="hero-desc">
+                Crafting visual narratives that resonate. Specializing in cinematic videography, 
+                compelling photography, and precision video editing.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0" id="hero-cta">
+                <a href="#work" class="magnetic-btn group relative px-8 py-4 bg-yellow-600 text-black font-medium tracking-wider uppercase text-sm overflow-hidden">
+                    <span class="relative z-10">View Portfolio</span>
+                    <div class="absolute inset-0 bg-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                </a>
+                <a href="#contact" class="magnetic-btn px-8 py-4 border border-white/30 text-white hover:border-yellow-600 hover:text-yellow-600 transition-all duration-300 tracking-wider uppercase text-sm">
+                    Get in Touch
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 opacity-0" id="scroll-indicator">
+            <div class="w-px h-16 bg-gradient-to-b from-yellow-600 to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Work/Portfolio Section -->
+    <section id="work" class="py-32 px-6 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div>
+                    <p class="text-yellow-600 text-sm tracking-[0.3em] uppercase mb-4">Selected Works</p>
+                    <h2 class="font-serif text-4xl md:text-6xl font-light">Featured Projects</h2>
+                </div>
+                
+                <!-- Filter Buttons -->
+                <div class="flex gap-4 flex-wrap">
+                    <button class="filter-btn active px-6 py-2 border border-yellow-600 bg-yellow-600 text-black text-sm tracking-wider uppercase transition-all" data-filter="all">All</button>
+                    <button class="filter-btn px-6 py-2 border border-white/20 hover:border-yellow-600 text-sm tracking-wider uppercase transition-all" data-filter="video">Video</button>
+                    <button class="filter-btn px-6 py-2 border border-white/20 hover:border-yellow-600 text-sm tracking-wider uppercase transition-all" data-filter="photo">Photography</button>
+                    <button class="filter-btn px-6 py-2 border border-white/20 hover:border-yellow-600 text-sm tracking-wider uppercase transition-all" data-filter="edit">Editing</button>
+                </div>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-grid">
+                
+                <!-- Project 1 -->
+                <div class="work-card group relative overflow-hidden cursor-pointer" data-category="video">
+                    <div class="aspect-[3/4] overflow-hidden bg-gray-900">
+                        <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?w=800&q=80" 
+                             alt="Cinematic Short Film" 
+                             class="w-full h-full object-cover transition-transform duration-700">
+                    </div>
+                    <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Short Film</p>
+                        <h3 class="font-serif text-2xl italic mb-2">Nocturne in Black</h3>
+                        <p class="text-gray-400 text-sm mb-4">Cinematography & Direction</p>
+                        <div class="play-pulse relative w-12 h-12 rounded-full border-2 border-yellow-600 flex items-center justify-center">
+                            <i data-lucide="play" class="w-5 h-5 text-yellow-600 ml-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="work-card group relative overflow-hidden cursor-pointer" data-category="photo">
+                    <div class="aspect-[3/4] overflow-hidden bg-gray-900">
+                        <img src="https://images.unsplash.com/photo-1554048612-387768052bf7?w=800&q=80" 
+                             alt="Portrait Series" 
+                             class="w-full h-full object-cover transition-transform duration-700">
+                    </div>
+                    <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Photography</p>
+                        <h3 class="font-serif text-2xl italic mb-2">Urban Solitude</h3>
+                        <p class="text-gray-400 text-sm">Portrait Series</p>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="work-card group relative overflow-hidden cursor-pointer" data-category="edit">
+                    <div class="aspect-[3/4] overflow-hidden bg-gray-900">
+                        <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80" 
+                             alt="Commercial Edit" 
+                             class="w-full h-full object-cover transition-transform duration-700">
+                    </div>
+                    <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Commercial</p>
+                        <h3 class="font-serif text-2xl italic mb-2">Luxe Brand Campaign</h3>
+                        <p class="text-gray-400 text-sm">Video Editing & Color</p>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="work-card group relative overflow-hidden cursor-pointer" data-category="video">
+                    <div class="aspect-[3/4] overflow-hidden bg-gray-900">
+                        <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80" 
+                             alt="Documentary" 
+                             class="w-full h-full object-cover transition-transform duration-700">
+                    </div>
+                    <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Documentary</p>
+                        <h3 class="font-serif text-2xl italic mb-2">Voices Unheard</h3>
+                        <p class="text-gray-400 text-sm">Director of Photography</p>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="work-card group relative overflow-hidden cursor-pointer" data-category="photo">
+                    <div class="aspect-[3/4] overflow-hidden bg-gray-900">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" 
+                             alt="Landscape" 
+                             class="w-full h-full object-cover transition-transform duration-700">
+                    </div>
+                    <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Photography</p>
+                        <h3 class="font-serif text-2xl italic mb-2">Mountain Whispers</h3>
+                        <p class="text-gray-400 text-sm">Landscape Series</p>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="work-card group relative overflow-hidden cursor-pointer" data-category="edit">
+                    <div class="aspect-[3/4] overflow-hidden bg-gray-900">
+                        <img src="https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=800&q=80" 
+                             alt="Music Video" 
+                             class="w-full h-full object-cover transition-transform duration-700">
+                    </div>
+                    <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Music Video</p>
+                        <h3 class="font-serif text-2xl italic mb-2">Midnight Echoes</h3>
+                        <p class="text-gray-400 text-sm">Edit & Visual Effects</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-16 text-center">
+                <button class="magnetic-btn px-8 py-4 border border-white/20 hover:border-yellow-600 hover:text-yellow-600 transition-all duration-300 tracking-wider uppercase text-sm">
+                    Load More Projects
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-6 bg-neutral-900/30 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-yellow-600/5 to-transparent pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="relative">
+                    <div class="aspect-[4/5] relative z-10">
+                        <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80" 
+                             alt="Veronica Jabbour" 
+                             class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-full h-full border-2 border-yellow-600/30 z-0"></div>
+                    <div class="absolute -top-6 -left-6 w-24 h-24 border-l-2 border-t-2 border-yellow-600"></div>
+                </div>
+                
+                <div>
+                    <p class="text-yellow-600 text-sm tracking-[0.3em] uppercase mb-4">About Me</p>
+                    <h2 class="font-serif text-4xl md:text-5xl font-light mb-8 leading-tight">
+                        Visual storyteller with an eye for <em class="text-yellow-600">cinematic beauty</em>
+                    </h2>
+                    <div class="space-y-6 text-gray-400 font-light leading-relaxed">
+                        <p>
+                            With over 10 years of experience in the film/Show and photography industry, I specialize 
+                            in creating compelling visual narratives that capture authentic moments and emotions. 
+                            My work spans commercial campaigns, documentary filmmaking, and artistic photography.
+                        </p>
+                        <p>
+                            Based in Canada & Lebanon, I collaborate with brands, agencies, and individual clients 
+                            worldwide, bringing a distinctive cinematic aesthetic to every project. My approach 
+                            combines technical precision with creative intuition, ensuring each frame serves the 
+                            story.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-8 mt-12 pt-12 border-t border-white/10">
+                        <div>
+                            <div class="font-serif text-3xl text-yellow-600 mb-2">8+</div>
+                            <div class="text-xs tracking-widest uppercase text-gray-500">Years Experience</div>
+                        </div>
+                        <div>
+                            <div class="font-serif text-3xl text-yellow-600 mb-2">150+</div>
+                            <div class="text-xs tracking-widest uppercase text-gray-500">Projects</div>
+                        </div>
+                        <div>
+                            <div class="font-serif text-3xl text-yellow-600 mb-2">40+</div>
+                            <div class="text-xs tracking-widest uppercase text-gray-500">Awards</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <p class="text-yellow-600 text-sm tracking-[0.3em] uppercase mb-4">What I Do</p>
+                <h2 class="font-serif text-4xl md:text-6xl font-light">Services</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="group p-8 border border-white/10 hover:border-yellow-600/50 transition-all duration-500 hover:bg-white/5">
+                    <div class="w-16 h-16 mb-6 flex items-center justify-center border border-yellow-600/30 rounded-full group-hover:bg-yellow-600/10 transition-colors">
+                        <i data-lucide="video" class="w-8 h-8 text-yellow-600"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl mb-4">Videography</h3>
+                    <p class="text-gray-400 font-light leading-relaxed mb-6">
+                        Cinematic filming for commercials, documentaries, events, and branded content. 
+                        Full production services from concept to delivery.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-yellow-600"></i>
+                            Commercial Production
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-yellow-600"></i>
+                            Documentary Filming
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-yellow-600"></i>
+                            Event Coverage
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="group p-8 border border-white/10 hover:border-yellow-600/50 transition-all duration-500 hover:bg-white/5">
+                    <div class="w-16 h-16 mb-6 flex items-center justify-center border border-yellow-600/30 rounded-full group-hover:bg-yellow-600/10 transition-colors">
+                        <i data-lucide="camera" class="w-8 h-8 text-yellow-600"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl mb-4">Photography</h3>
+                    <p class="text-gray-400 font-light leading-relaxed mb-6">
+                        Professional photography services including portraits, product shoots, 
+                        and lifestyle imagery with a distinctive cinematic style.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-yellow-600"></i>
+                            Portrait Sessions
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-yellow-600"></i>
+                            Product Photography
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-yellow-600"></i>
+                            Editorial Shoots
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="group p-8 border border-white/10 hover:border-yellow-600/50 transition-all duration-500 hover:bg-white/5">
+                    <div class="w-16 h-16 mb-6 flex items-center justify-center border border-yellow-600/30 rounded-full group-hover:bg-yellow-600/10 transition-colors">
+                        <i data-lucide="scissors" class="w-8 h-8 text-yellow-600"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl mb-4">Video Editing</h3>
+                    <p class="text-gray-400 font-light leading-relaxed mb-6">
+                        Expert post-production including editing, color grading, sound design, 
+                        and visual effects to bring your footage to life.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-yellow-600"></i>
+                            Color Grading
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-yellow-600"></i>
+                            Motion Graphics
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="check" class="w-4 h-4 text-yellow-600"></i>
+                            Sound Design
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials/Clients -->
+    <section class="py-24 px-6 border-y border-white/10">
+        <div class="max-w-7xl mx-auto">
+            <p class="text-center text-gray-500 text-sm tracking-widest uppercase mb-12">Trusted By</p>
+            <div class="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-50">
+                <div class="font-serif text-2xl italic">Vogue</div>
+                <div class="font-serif text-2xl italic">Netflix</div>
+                <div class="font-serif text-2xl italic">Sony</div>
+                <div class="font-serif text-2xl italic">Adidas</div>
+                <div class="font-serif text-2xl italic">Universal</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 px-6 relative">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-yellow-600 text-sm tracking-[0.3em] uppercase mb-4">Get in Touch</p>
+            <h2 class="font-serif text-4xl md:text-6xl font-light mb-8">Let's Create Together</h2>
+            <p class="text-gray-400 font-light text-lg mb-12 max-w-2xl mx-auto">
+                Have a project in mind? I'd love to hear about it. Let's discuss how we can bring 
+                your vision to life through compelling visual storytelling.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+                <a href="mailto:veronica_j666@live.com" class="magnetic-btn group relative px-10 py-5 bg-yellow-600 text-black font-medium tracking-wider uppercase overflow-hidden">
+                    <span class="relative z-10 flex items-center gap-2">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                        veronica_j666@live.com
+                    </span>
+                    <div class="absolute inset-0 bg-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                </a>
+            </div>
+
+            <div class="flex justify-center gap-8">
+                <a href="#" class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:border-yellow-600 hover:text-yellow-600 transition-all">
+                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:border-yellow-600 hover:text-yellow-600 transition-all">
+                    <i data-lucide="youtube" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:border-yellow-600 hover:text-yellow-600 transition-all">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:border-yellow-600 hover:text-yellow-600 transition-all">
+                    <i data-lucide="vimeo" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-6 border-t border-white/10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="font-serif text-lg tracking-widest">VERONICA<span class="text-yellow-600">.</span></p>
+            <p class="text-gray-600 text-sm">&copy; 2026 Veronica Jabbour. All rights reserved.</p>
+            <div class="flex gap-6 text-sm text-gray-500">
+                <a href="#" class="hover:text-yellow-600 transition-colors">Privacy</a>
+                <a href="#" class="hover:text-yellow-600 transition-colors">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Loading screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+                initAnimations();
+            }, 1500);
+        });
+
+        // GSAP Animations
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero animations
+            const tl = gsap.timeline();
+            
+            tl.to('#hero-subtitle', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out'
+            })
+            .to('#hero-title span span', {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                stagger: 0.2,
+                ease: 'power3.out'
+            }, '-=0.5')
+            .to('#hero-desc', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out'
+            }, '-=0.8')
+            .to('#hero-cta', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out'
+            }, '-=0.6')
+            .to('#scroll-indicator', {
+                opacity: 1,
+                duration: 1
+            }, '-=0.4');
+
+            // Parallax hero background
+            gsap.to('#hero-bg', {
+                yPercent: 30,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: 'body',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+
+            // Work cards stagger
+            gsap.from('.work-card', {
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '#portfolio-grid',
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            // Navigation background on scroll
+            ScrollTrigger.create({
+                start: 'top -100',
+                end: 99999,
+                toggleClass: { className: 'nav-blur', targets: '#navbar' }
+            });
+        }
+
+        // Portfolio filtering
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const workCards = document.querySelectorAll('.work-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active state
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-yellow-600', 'text-black', 'border-yellow-600');
+                    b.classList.add('border-white/20');
+                });
+                btn.classList.remove('border-white/20');
+                btn.classList.add('bg-yellow-600', 'text-black', 'border-yellow-600');
+
+                const filter = btn.getAttribute('data-filter');
+
+                workCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        gsap.to(card, {
+                            scale: 1,
+                            opacity: 1,
+                            duration: 0.4,
+                            display: 'block'
+                        });
+                    } else {
+                        gsap.to(card, {
+                            scale: 0.8,
+                            opacity: 0,
+                            duration: 0.4,
+                            display: 'none'
+                        });
+                    }
+                });
+            });
+        });
+
+        // Mobile menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-full');
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('translate-x-full');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('translate-x-full');
+            });
+        });
+
+        // Magnetic button effect
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
