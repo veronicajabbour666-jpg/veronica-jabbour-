@@ -268,17 +268,21 @@
 
                 <!-- Project 2 -->
                 <div class="work-card group relative overflow-hidden cursor-pointer" data-category="photo">
-                    <div class="aspect-[3/4] overflow-hidden bg-gray-900">
-                        <img src="https://images.unsplash.com/photo-1554048612-387768052bf7?w=800&q=80" 
-                             alt="Portrait Series" 
-                             class="w-full h-full object-cover transition-transform duration-700">
-                    </div>
-                    <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
-                        <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Photography</p>
-                        <h3 class="font-serif text-2xl italic mb-2">Urban Solitude</h3>
-                        <p class="text-gray-400 text-sm">Portrait Series</p>
-                    </div>
-                </div>
+    <div class="aspect-[3/4] overflow-hidden bg-gray-900 relative">
+        <video 
+            class="w-full h-full object-cover" 
+            controls 
+            preload="metadata"
+            poster="images/photography-poster.jpg">
+            <source src="videos/photography.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+        <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Photography</p>
+        <h3 class="font-serif text-2xl italic mb-2">Animated Photography</h3>
+        <p class="text-gray-400 text-sm">Photography & Motion</p>
+    </div>
+</div>
 
                 <!-- Project 3 -->
                 <div class="work-card group relative overflow-hidden cursor-pointer" data-category="edit">
