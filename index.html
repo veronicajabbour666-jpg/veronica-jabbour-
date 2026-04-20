@@ -246,83 +246,84 @@
             </div>
         </div>
 
-        <!-- Portfolio Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-grid">
-            
-            <!-- Project 1 - Moments Video -->
-            <div class="work-card group relative overflow-hidden cursor-pointer" data-category="video">
-                <div class="aspect-[3/4] overflow-hidden bg-gray-900 relative">
-                    <video 
-                        class="w-full h-full object-cover" 
-                        controls 
-                        preload="metadata"
-                        poster="images/moments-poster.jpg">
-                        <source src="videos/MOMENTS.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
-                    <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Video</p>
-                    <h3 class="font-serif text-2xl italic mb-2">Moments</h3>
-                    <p class="text-gray-400 text-sm mb-4">Director / Cinematographer</p>
-                    <div class="play-pulse relative w-12 h-12 rounded-full border-2 border-yellow-600 flex items-center justify-center">
-                        <i data-lucide="play" class="w-5 h-5 text-yellow-600 ml-1"></i>
-                    </div>
+       <!-- Portfolio Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-grid">
+    
+    <!-- Project 1 - Moments Video -->
+    <div class="work-card group relative overflow-hidden cursor-pointer" data-category="video">
+        <div class="aspect-[3/4] overflow-hidden bg-gray-900 relative">
+            <video 
+                class="w-full h-full object-cover" 
+                controls 
+                preload="metadata"
+                poster="images/moments-poster.jpg">
+                <source src="videos/MOMENTS.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+            <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Video</p>
+            <h3 class="font-serif text-2xl italic mb-2">Moments</h3>
+            <p class="text-gray-400 text-sm mb-4">Director / Cinematographer</p>
+            <div class="play-pulse relative w-12 h-12 rounded-full border-2 border-yellow-600 flex items-center justify-center">
+                <i data-lucide="play" class="w-5 h-5 text-yellow-600 ml-1"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project 2 - Vimeo -->
+    <div class="work-card group relative overflow-hidden cursor-pointer" data-category="video">
+        <div class="aspect-[3/4] overflow-hidden bg-gray-900 relative">
+            <a href="https://vimeo.com/352258056" target="_blank">
+                <img src="images/vimeo-thumbnail.jpg" 
+                     alt="Vimeo Project" 
+                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            </a>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="w-16 h-16 rounded-full bg-yellow-600/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <i data-lucide="play" class="w-6 h-6 text-black ml-1"></i>
                 </div>
             </div>
+        </div>
+        <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+            <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Video</p>
+            <h3 class="font-serif text-2xl italic mb-2">Vimeo Project</h3>
+            <p class="text-gray-400 text-sm mb-4">Director / Cinematographer</p>
+            <a href="https://vimeo.com/352258056" target="_blank" class="text-yellow-600 text-sm uppercase tracking-wider hover:text-white transition-colors">
+                Watch on Vimeo →
+            </a>
+        </div>
+    </div>
 
-            <!-- Project 2 - Vimeo -->
-            <div class="work-card group relative overflow-hidden cursor-pointer" data-category="video">
-                <div class="aspect-[3/4] overflow-hidden bg-gray-900 relative">
-                    <a href="https://vimeo.com/352258056" target="_blank">
-                        <img src="images/vimeo-thumbnail.jpg" 
-                             alt="Vimeo Project" 
-                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    </a>
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div class="w-16 h-16 rounded-full bg-yellow-600/90 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <i data-lucide="play" class="w-6 h-6 text-black ml-1"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
-                    <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Video</p>
-                    <h3 class="font-serif text-2xl italic mb-2">Vimeo Project</h3>
-                    <p class="text-gray-400 text-sm mb-4">Director / Cinematographer</p>
-                    <a href="https://vimeo.com/352258056" target="_blank" class="text-yellow-600 text-sm uppercase tracking-wider hover:text-white transition-colors">
-                        Watch on Vimeo →
-                    </a>
-                </div>
-            </div>
+    <!-- Project 3 - Photography f5 -->
+    <div class="work-card group relative overflow-hidden cursor-pointer" data-category="photo">
+        <div class="aspect-[3/4] overflow-hidden bg-gray-900">
+            <img src="images/f5.jpg" 
+                 alt="Photography Project" 
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        </div>
+        <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+            <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Photography</p>
+            <h3 class="font-serif text-2xl italic mb-2">Fashion Photography</h3>
+            <p class="text-gray-400 text-sm">Portrait Session</p>
+        </div>
+    </div>
 
-            <!-- Project 3 - Photography f5 -->
-            <div class="work-card group relative overflow-hidden cursor-pointer" data-category="photo">
-                <div class="aspect-[3/4] overflow-hidden bg-gray-900">
-                    <img src="images/f5.jpg" 
-                         alt="Photography Project" 
-                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                </div>
-                <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
-                    <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Photography</p>
-                    <h3 class="font-serif text-2xl italic mb-2">Fashion Photography</h3>
-                    <p class="text-gray-400 text-sm">Portrait Session</p>
-                </div>
-            </div>
+    <!-- Project 4 - Photography f9 -->
+    <div class="work-card group relative overflow-hidden cursor-pointer" data-category="photo">
+        <div class="aspect-[3/4] overflow-hidden bg-gray-900">
+            <img src="images/f9.jpg" 
+                 alt="Photography Project" 
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        </div>
+        <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+            <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Photography</p>
+            <h3 class="font-serif text-2xl italic mb-2">Editorial Shoot</h3>
+            <p class="text-gray-400 text-sm">Fashion Photography</p>
+        </div>
+    </div>
 
-            <!-- Project 4 - Photography f9 -->
-            <div class="work-card group relative overflow-hidden cursor-pointer" data-category="photo">
-                <div class="aspect-[3/4] overflow-hidden bg-gray-900">
-                    <img src="images/f9.jpg" 
-                         alt="Photography Project" 
-                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                </div>
-                <div class="work-overlay absolute inset-0 bg-black/80 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
-                    <p class="text-yellow-600 text-xs tracking-widest uppercase mb-2">Photography</p>
-                    <h3 class="font-serif text-2xl italic mb-2">Editorial Shoot</h3>
-                    <p class="text-gray-400 text-sm">Fashion Photography</p>
-                </div>
-            </div>
-
+</div>
                 <!-- Project 5 -->
                 <div class="work-card group relative overflow-hidden cursor-pointer" data-category="photo">
                     <div class="aspect-[3/4] overflow-hidden bg-gray-900">
